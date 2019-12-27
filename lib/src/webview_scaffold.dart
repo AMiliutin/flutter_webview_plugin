@@ -182,6 +182,7 @@ class _WebviewScaffoldState extends State<WebviewScaffold> {
               geolocationEnabled: widget.geolocationEnabled,
               debuggingEnabled: widget.debuggingEnabled,
               ignoreSSLErrors: widget.ignoreSSLErrors,
+              contentProviderAuthority: widget.contentProviderAuthority,
             );
           } else {
             if (_rect != value) {
