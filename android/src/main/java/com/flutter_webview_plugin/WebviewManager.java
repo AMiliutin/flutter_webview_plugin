@@ -300,7 +300,6 @@ class WebviewManager {
             String defaultAuthority = packageName + ".fileprovider";
             authority = defaultAuthority;
         }
-        Log.d("TAG", "authority " + authority);
         return FileProvider.getUriForFile(context, authority, capturedFile);
     }
 
