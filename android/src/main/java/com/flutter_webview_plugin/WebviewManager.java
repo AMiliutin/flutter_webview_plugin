@@ -8,6 +8,7 @@ import android.content.Context;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,18 +128,21 @@ class WebviewManager {
     Context context;
     private boolean ignoreSSLErrors = false;
 
-    WebviewManager(final Activity activity, final Context context, final List<String> channelNames) {
+    private String contentProviderAuthority;
+
+    WebviewManager(final Activity activity, final Context context, final List<String> channelNames, final String contentProviderAuthority) {
         this.webView = new ObservableWebView(activity);
         this.activity = activity;
         this.context = context;
         this.resultHandler = new ResultHandler();
         this.platformThreadHandler = new Handler(context.getMainLooper());
+        this.contentProviderAuthority = contentProviderAuthority;
         webViewClient = new BrowserClient() {
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                if (ignoreSSLErrors){
+                if (ignoreSSLErrors) {
                     handler.proceed();
-                }else {
+                } else {
                     super.onReceivedSslError(view, handler, error);
                 }
             }
@@ -287,7 +291,15 @@ class WebviewManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return FileProvider.getUriForFile(context, packageName + ".fileprovider", capturedFile);
+
+        String authority;
+        if (contentProviderAuthority != null && !contentProviderAuthority.isEmpty()) {
+            authority = contentProviderAuthority;
+        } else {
+            String defaultAuthority = packageName + ".fileprovider";
+            authority = defaultAuthority;
+        }
+        return FileProvider.getUriForFile(context, authority, capturedFile);
     }
 
     private File createCapturedFile(String prefix, String suffix) throws IOException {
@@ -533,7 +545,7 @@ class WebviewManager {
     /**
      * Clears cache
      */
-    void cleanCache(){
+    void cleanCache() {
         webView.clearCache(true);
     }
 

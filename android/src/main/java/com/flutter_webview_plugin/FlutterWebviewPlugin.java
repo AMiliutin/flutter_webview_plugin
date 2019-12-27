@@ -129,13 +129,15 @@ public class FlutterWebviewPlugin implements MethodCallHandler, PluginRegistry.A
         boolean debuggingEnabled = call.argument("debuggingEnabled");
         boolean ignoreSSLErrors = call.argument("ignoreSSLErrors");
 
+        String contentProviderAuthority = call.argument("contentProviderAuthority");
+
         if (webViewManager == null || webViewManager.closed == true) {
             Map<String, Object> arguments = (Map<String, Object>) call.arguments;
             List<String> channelNames = new ArrayList();
             if (arguments.containsKey(JS_CHANNEL_NAMES_FIELD)) {
                 channelNames = (List<String>) arguments.get(JS_CHANNEL_NAMES_FIELD);
             }
-            webViewManager = new WebviewManager(activity, context, channelNames);
+            webViewManager = new WebviewManager(activity, context, channelNames, contentProviderAuthority);
         }
 
         FrameLayout.LayoutParams params = buildLayoutParams(call);

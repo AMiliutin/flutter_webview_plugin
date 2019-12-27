@@ -41,6 +41,7 @@ class WebviewScaffold extends StatefulWidget {
     this.geolocationEnabled,
     this.debuggingEnabled = false,
     this.ignoreSSLErrors = false,
+    this.contentProviderAuthority,
   }) : super(key: key);
 
   final PreferredSizeWidget appBar;
@@ -74,6 +75,8 @@ class WebviewScaffold extends StatefulWidget {
   final bool useWideViewPort;
   final bool debuggingEnabled;
   final bool ignoreSSLErrors;
+
+  final String contentProviderAuthority;
 
   @override
   _WebviewScaffoldState createState() => _WebviewScaffoldState();
@@ -111,8 +114,7 @@ class _WebviewScaffoldState extends State<WebviewScaffold> {
     });
 
     if (widget.hidden) {
-      _onStateChanged =
-          webviewReference.onStateChanged.listen((WebViewStateChanged state) {
+      _onStateChanged = webviewReference.onStateChanged.listen((WebViewStateChanged state) {
         if (state.type == WebViewState.finishLoad) {
           webviewReference.show();
         }
@@ -192,8 +194,7 @@ class _WebviewScaffoldState extends State<WebviewScaffold> {
             }
           }
         },
-        child: widget.initialChild ??
-            const Center(child: const CircularProgressIndicator()),
+        child: widget.initialChild ?? const Center(child: const CircularProgressIndicator()),
       ),
     );
   }
@@ -216,8 +217,7 @@ class _WebviewPlaceholder extends SingleChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, _WebviewPlaceholderRender renderObject) {
+  void updateRenderObject(BuildContext context, _WebviewPlaceholderRender renderObject) {
     renderObject..onRectChanged = onRectChanged;
   }
 }
