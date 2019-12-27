@@ -9,6 +9,7 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -299,6 +300,7 @@ class WebviewManager {
             String defaultAuthority = packageName + ".fileprovider";
             authority = defaultAuthority;
         }
+        Log.d("TAG", "authority " + authority);
         return FileProvider.getUriForFile(context, authority, capturedFile);
     }
 
